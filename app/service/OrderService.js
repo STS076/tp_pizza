@@ -1,5 +1,5 @@
 const { MongoClient } = require("mongodb");
-const uri = "mongodb://sophie_toussaint:caolso14vylb@localhost:27018/";
+const uri = "mongodb://LaMouettas:root@localhost:27018/";
 const client = new MongoClient(uri);
 
 
@@ -32,9 +32,23 @@ class OrderService {
         // iterate code goes here
         orders.forEach(console.log);
     }
+
+    getTotalPrice() {
+        const db = client.db("pizzas_orders_db");
+        const coll = db.collection("orders");
+
+        const orders = coll.find();
+        let totalPrice = 0
+        orders.forEach(order => {
+            console.log(totalPrice);
+            totalPrice += order.quantity * order.price;
+        });
+        return price;
+    }
 }
 
 const order = new OrderService()
-console.log( order.getOrdersByPizza("Pepperoni") )
-console.log( order.getOrdersBySize("small") )
-console.log( order.getOrders() )
+// console.log( order.getOrdersByPizza("Pepperoni") )
+// console.log( order.getOrdersBySize("small") )
+// console.log( order.getOrders() )
+console.log( "totalPrice: ",order.getTotalPrice() )
