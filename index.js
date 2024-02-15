@@ -10,9 +10,10 @@ async function run() {
     const database = client.db('pizzas_orders_db');
     const orders = database.collection('orders');
   
+    const query = { name: 'Pepperoni' };
     const order = await orders.findOne(query);
-
     console.log(order);
+
   } finally {
     // Ensures that the client will close when you finish/error
     await client.close();
