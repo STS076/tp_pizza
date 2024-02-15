@@ -1,16 +1,15 @@
 {
-  "dependencies": {
-    "mongodb": "6.3",
-    "node": "^21.6.1"
-  },
   "name": "tp-pizza",
   "version": "1.0.0",
-  "main": "mongo-init.js",
+  "description": "- Choisissez entre les 2 options suivantes :\r   - Option 1 : Création de la base de données, puis import manuel\r   - Option 2 : Création de la base de données, puis import automatique de données JSON (adaptez le contenu du fichier ./mongo_db/import/data.json)",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "dependencies": {
+    "mongodb": "6.3"
+  }
 }

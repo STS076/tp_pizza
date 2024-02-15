@@ -1,4 +1,5 @@
-db
-mongo-init.js
-data
+.DS_Store
+**/.env
+mongo_db/data
+mongodb.dump
 node_modules
