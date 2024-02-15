@@ -2,4 +2,4 @@
 **/.env
 mongo_db/data
 mongodb.dump
-node_modules
+node_modules/
