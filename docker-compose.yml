@@ -1,16 +1,25 @@
 version: "3.9"
-
 services:
   mongo_db:
     container_name: mongo_db
     image: mongo:latest
-    restart: always
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 50s
     ports:
-        - 27017:27017
+      - 27018:27017
     command: mongod
     env_file: .env
     volumes:
-        - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      - ./db/import:/tmp/import
+      - ./db/data:/data/db
+    logging:
+      driver: none
+    networks:
+      - pizzas_orders
 
   mongo-express:
     image: mongo-express
@@ -18,10 +27,11 @@ services:
       - 8081:8081
     env_file: .env
     depends_on:
-      - mongo_db
+      mongo_db:
+        condition: service_healthy
     networks:
-      - pizza
+      - pizzas_orders
 
 networks:
-  pizza:
+  pizzas_orders:
     driver: bridge
