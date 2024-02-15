@@ -14,6 +14,7 @@ async function run() {
     const order = await orders.findOne(query);
     console.log(order);
 
+
   } finally {
     // Ensures that the client will close when you finish/error
     await client.close();
