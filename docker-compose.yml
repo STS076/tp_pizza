@@ -3,27 +3,24 @@ version: "3.9"
 services:
   mongo_db:
     container_name: mongo_db
-    image: mongo
+    image: mongo:latest
+    restart: always
     ports:
-      - 27018:27017
+        - 27017:27017
     command: mongod
     env_file: .env
     volumes:
-      - ./db/data:/data/db
-    logging:
-      driver: none
+        - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+
+  mongo-express:
+    image: mongo-express
+    ports:
+      - 8081:8081
+    env_file: .env
+    depends_on:
+      - mongo_db
     networks:
       - pizza
-
-mongo-express:
-  image: mongo-express
-  ports:
-    - 8081:8081
-  env_file: ./mongo_express/.env
-  depends_on:
-    - mongo_db
-  networks:
-    - pizza
 
 networks:
   pizza:
