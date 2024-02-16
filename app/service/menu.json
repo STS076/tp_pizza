@@ -1,0 +1,55 @@
+[
+    {
+        "_id": null,
+        "menuItems": [
+            {
+                "_id": 0,
+                "name": "Pepperoni",
+                "size": "small",
+                "price": 19
+            },
+            {
+                "_id": 1,
+                "name": "Pepperoni",
+                "size": "medium",
+                "price": 20
+            },
+            {
+                "_id": 2,
+                "name": "Pepperoni",
+                "size": "large",
+                "price": 21
+            },
+            {
+                "_id": 3,
+                "name": "Cheese",
+                "size": "small",
+                "price": 12
+            },
+            {
+                "_id": 4,
+                "name": "Cheese",
+                "size": "medium",
+                "price": 13
+            },
+            {
+                "_id": 5,
+                "name": "Cheese",
+                "size": "large",
+                "price": 14
+            },
+            {
+                "_id": 6,
+                "name": "Vegan",
+                "size": "small",
+                "price": 17
+            },
+            {
+                "_id": 7,
+                "name": "Vegan",
+                "size": "medium",
+                "price": 18
+            }
+        ]
+    }
+]
