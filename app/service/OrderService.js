@@ -58,6 +58,20 @@ class OrderService {
         });
         return totalOrders;
     }
+
+    async getVeganPizza(vegan) {
+        const db = client.db("pizzas_orders_db");
+        const coll = db.collection("orders");
+
+        const query = { name: vegan };
+        const orders = coll.find(query);
+        let veganOrders = 0;
+        await orders.forEach(order => {
+            veganOrders += order.quantity;
+        }).then(veganOrders => { return veganOrders });
+        //   return veganOrders;
+    }
+
 }
 
 const order = new OrderService()
@@ -65,4 +79,5 @@ const order = new OrderService()
 // console.log( order.getOrdersBySize("small") )
 // console.log( order.getOrders() )
 // console.log( "totalPrice: ",order.getTotalPrice() )
-console.log("totalOrders: ", order.getTotalOrders())
+// console.log("totalOrders: ", order.getTotalOrders())
+console.log("Vegan orders : ", order.getVeganPizza("Vegan"))
