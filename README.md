@@ -19,9 +19,9 @@ db.orders.aggregate([{$group: {_id : "_id", avgQuantity: { $avg: "$quantity" }}}
 
 Calcul de la quantité de pizzas commandées par format "medium" pour chaque recette de pizza :
 
- db.orders.aggregate([{$group : { _id : "$name" , mediumQty: {$sum : "$quantity"} }}])
+db.orders.aggregate([{$match: { "size": "medium" } },{ $group: {_id: "$name",   mediumQty: { $sum: "$quantity" }   }  }])
 [
-  { _id: 'Vegan', mediumQty: 20 },
-  { _id: 'Pepperoni', mediumQty: 60 },
-  { _id: 'Cheese', mediumQty: 75 }
+  { _id: 'Vegan', mediumQty: 10 },
+  { _id: 'Pepperoni', mediumQty: 20 },
+  { _id: 'Cheese', mediumQty: 50 }
 ]
