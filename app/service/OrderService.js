@@ -135,7 +135,7 @@ class OrderService {
             }
         });
 
-        let mostSold = 0;
+        let mostSold = "";
         let maxSales = 0;
         for (let quantity in salesByPizza) {
             if (salesByPizza[quantity] > maxSales) {
