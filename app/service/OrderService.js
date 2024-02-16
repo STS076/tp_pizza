@@ -1,7 +1,7 @@
 const { MongoClient } = require("mongodb");
-const uri = "mongodb://sophie_toussaint:caolso14vylb@localhost:27018/";
+require('dotenv').config();
+const uri = 'mongodb://sophie_toussaint:caolso14vylb@localhost:27018/';
 const client = new MongoClient(uri);
-
 
 class OrderService {
     getOrdersByPizza(name) {
@@ -90,6 +90,26 @@ class OrderService {
         const coll = db.collection("orders");
 
         const orders = coll.find();
+        let maxcount = 0; 
+        let n = coll.length;
+        let element_having_max_freq; 
+        for (let i = 0; i < n; i++) { 
+            let count = 0; 
+            for (let j = 0; j < n; j++) { 
+                if (orders[i] == orders[j]) 
+                    count++; 
+            } 
+     
+            if (count > maxcount) { 
+                maxcount = count; 
+                element_having_max_freq = orders[i]; 
+            } 
+        } 
+        console.log(element_having_max_freq)
+        return element_having_max_freq; 
+    
+
+        
     }
 }
 
@@ -101,3 +121,4 @@ const order = new OrderService()
 // console.log("totalOrders: ", order.getTotalOrders())
 // console.log("Vegan orders : ", order.getVeganPizza("Vegan"))
 // console.log("Large orders : ", order.getLargePizza("large"))
+console.log("most populaur", order.mostPopularReceipe() )
