@@ -1,5 +1,5 @@
 const { MongoClient } = require("mongodb");
-const uri = "mongodb://LaMouettas:root@localhost:27018/";
+const uri = "mongodb://sophie_toussaint:caolso14vylb@localhost:27018/";
 const client = new MongoClient(uri);
 
 
@@ -43,7 +43,20 @@ class OrderService {
             console.log(totalPrice);
             totalPrice += order.quantity * order.price;
         });
-        return price;
+        return totalPrice;
+    }
+
+    getTotalOrders() {
+        const db = client.db("pizzas_orders_db");
+        const coll = db.collection("orders");
+
+        const orders = coll.find();
+        let totalOrders = 0;
+        orders.forEach(order => {
+            console.log(totalOrders);
+            totalOrders += order.quantity;
+        });
+        return totalOrders;
     }
 }
 
@@ -51,4 +64,5 @@ const order = new OrderService()
 // console.log( order.getOrdersByPizza("Pepperoni") )
 // console.log( order.getOrdersBySize("small") )
 // console.log( order.getOrders() )
-console.log( "totalPrice: ",order.getTotalPrice() )
+// console.log( "totalPrice: ",order.getTotalPrice() )
+console.log("totalOrders: ", order.getTotalOrders())

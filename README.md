@@ -3,4 +3,5 @@ TP Pizza
 - Juventin Nguyen
 
 Etape 3
-- a: 
+- a: 2360
+- b : 145
