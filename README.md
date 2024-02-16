@@ -25,3 +25,5 @@ db.orders.aggregate([{$match: { "size": "medium" } },{ $group: {_id: "$name",   
   { _id: 'Pepperoni', mediumQty: 20 },
   { _id: 'Cheese', mediumQty: 50 }
 ]
+
+Fin : Etape 6, point 3
