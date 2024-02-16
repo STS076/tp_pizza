@@ -29,7 +29,6 @@ class OrderService {
         const coll = db.collection("orders");
 
         const orders = coll.find();
-        // iterate code goes here
         orders.forEach(console.log);
     }
 
@@ -73,12 +72,32 @@ class OrderService {
         console.log(veganOrders)
     }
 
+    async getLargePizza(large) {
+        const db = client.db("pizzas_orders_db");
+        const coll = db.collection("orders");
+
+        const query = { size: large };
+        const orders = coll.find(query);
+        let largeOrders = 0;
+        await orders.forEach(order => {
+            largeOrders += order.quantity;
+        }).then(largeOrders => { return largeOrders });
+        console.log(largeOrders)
+    }
+
+    async mostPopularReceipe() {
+        const db = client.db("pizzas_orders_db");
+        const coll = db.collection("orders");
+
+        const orders = coll.find();
+    }
 }
 
 const order = new OrderService()
 // console.log( order.getOrdersByPizza("Pepperoni") )
 // console.log( order.getOrdersBySize("small") )
 // console.log( order.getOrders() )
-console.log( "totalPrice: ",order.getTotalPrice() )
+// console.log( "totalPrice: ",order.getTotalPrice() )
 // console.log("totalOrders: ", order.getTotalOrders())
 // console.log("Vegan orders : ", order.getVeganPizza("Vegan"))
+// console.log("Large orders : ", order.getLargePizza("large"))
