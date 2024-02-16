@@ -102,7 +102,7 @@ class OrderService {
   async getMostPopularPizzaSize() {
     const db = client.db("pizzas_orders_db");
     const coll = db.collection("orders");
-  
+
     // Convertir le cursor en tableau pour pouvoir utiliser await
     const orders = await coll.find().toArray();
     let salesCount = {
@@ -110,17 +110,17 @@ class OrderService {
       medium: { quantity: 0 },
       large: { quantity: 0 },
     };
-  
+
     // Calculer le total des quantités vendues pour chaque taille de pizza
     orders.forEach((order) => {
       if (salesCount[order.size]) {
         salesCount[order.size].quantity += order.quantity;
       }
     });
-  
+
     // Afficher les résultats de salesCount pour débogage
     console.log(salesCount);
-  
+
     // Trouver la taille de pizza la plus vendue
     return Object.keys(salesCount).reduce((a, b) =>
       salesCount[a].quantity > salesCount[b].quantity ? a : b
@@ -134,18 +134,48 @@ class OrderService {
     const orders = coll.find();
     let mostProfitable = 0;
     let mostProfitablePizza = {};
-    await orders
-      .forEach((order) => {
-        const total = order.quantity * order.price;
-        if (total > mostProfitable) {
-          mostProfitable = total;
-          mostProfitablePizza = order;
-        }
-      })
-      .then(() => {
-        return mostProfitablePizza;
-      });
-    console.log(mostProfitablePizza);
+    await orders.forEach((order) => {
+      const total = order.quantity * order.price;
+      if (total > mostProfitable) {
+        mostProfitable = total;
+        mostProfitablePizza = order;
+      }
+      console.log(mostSold);
+      return mostSold;
+    });
+  }
+
+  async getMostPopularPizza() {
+    const db = client.db("pizzas_orders_db");
+    const coll = db.collection("orders");
+
+    // Convertir le cursor en tableau pour pouvoir utiliser await
+    const orders = await coll.find().toArray();
+    let salesCount = [];
+
+    // Calculer le total des quantités vendues pour chaque pizza
+    orders.forEach((order) => {
+      // Pas besoin de 'await' ici car forEach n'est pas asynchrone
+      const pizzaIndex = salesCount.findIndex(
+        (item) => item.name === order.name
+      );
+      if (pizzaIndex !== -1) {
+        salesCount[pizzaIndex].quantity += order.quantity;
+      } else {
+        salesCount.push({ name: order.name, quantity: order.quantity });
+      }
+    });
+
+    // Afficher les résultats de salesCount pour débogage
+    console.log(salesCount);
+
+    // Trouver la pizza la plus vendue
+    const mostPopularPizza = salesCount.reduce((a, b) =>
+      a.quantity > b.quantity ? a : b
+    );
+
+    // Retourner le nom de la pizza la plus vendue
+    return mostPopularPizza.name; // Pas besoin de 'await' ici
   }
 }
 
@@ -158,10 +188,22 @@ const order = new OrderService();
 // console.log("Vegan orders : ", order.getVeganPizza("Vegan"))
 // console.log("Large orders : ", order.getLargePizza("large"))
 // console.log("Recette : ", order.getMostProfitablePizza());
-order.getMostPopularPizzaSize()
-  .then(mostPopularSize => {
-    console.log(`La taille de pizza la plus populaire est : ${mostPopularSize}`);
+order
+  .getMostPopularPizzaSize()
+  .then((mostPopularSize) => {
+    console.log(
+      `La taille de pizza la plus populaire est : ${mostPopularSize}`
+    );
   })
-  .catch(error => {
+  .catch((error) => {
+    console.error(error);
+  });
+
+order
+  .getMostPopularPizza()
+  .then((mostPopularPizza) => {
+    console.log(`La pizza la plus populaire est : ${mostPopularPizza}`);
+  })
+  .catch((error) => {
     console.error(error);
   });
