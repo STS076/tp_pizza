@@ -10,3 +10,18 @@ Etape 3
 - e : 75, Cheese 
 - f : medium 
 - g : 650, pizza id n° 4
+
+Etape 4 : 
+Calcul du nombre moyen de pizzas commandées:
+
+db.orders.aggregate([{$group: {_id : "_id", avgQuantity: { $avg: "$quantity" }}}])
+[ { _id: '_id', avgQuantity: 19.375 } ]
+
+Calcul de la quantité de pizzas commandées par format "medium" pour chaque recette de pizza :
+
+db.orders.aggregate([{$match: { "size": "medium" } },{ $group: {_id: "$name",   mediumQty: { $sum: "$quantity" }   }  }])
+[
+  { _id: 'Vegan', mediumQty: 10 },
+  { _id: 'Pepperoni', mediumQty: 20 },
+  { _id: 'Cheese', mediumQty: 50 }
+]
