@@ -177,6 +177,28 @@ class OrderService {
     // Retourner le nom de la pizza la plus vendue
     return mostPopularPizza.name; // Pas besoin de 'await' ici
   }
+
+  async getAveragePizzaSold() {
+    const db = client.db("pizzas_orders_db");
+    const coll = db.collection("orders");
+
+    const aggregationPipeline = [
+      {
+        $group: {
+          _id: null,
+          totalQuantity: { $sum: "$quantity" },
+          count: { $sum: 1 },
+        },
+      },
+    ];
+
+    const result = await coll.aggregate(aggregationPipeline).toArray();
+    const AveragePizzaSold = result[0].totalQuantity / result[0].count;
+
+    // console.log("AveragePizzaSold: ",AveragePizzaSold);
+
+    return AveragePizzaSold;
+  }
 }
 
 const order = new OrderService();
@@ -203,6 +225,15 @@ order
   .getMostPopularPizza()
   .then((mostPopularPizza) => {
     console.log(`La pizza la plus populaire est : ${mostPopularPizza}`);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+
+order
+  .getAveragePizzaSold()
+  .then((average) => {
+    console.log(`La moyenne de pizza vendue est : ${average}`);
   })
   .catch((error) => {
     console.error(error);
