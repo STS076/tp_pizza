@@ -191,7 +191,7 @@ class OrderService {
             {
                 $group: {
                     _id: '$name',
-                    quantiteTotale: { $sum: '$quantity' },
+                    mediumQty: { $sum: '$quantity' },
                 },
             },
         ]).toArray();
