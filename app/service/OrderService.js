@@ -1,6 +1,6 @@
 const { MongoClient } = require("mongodb");
 require("dotenv").config();
-const uri = "mongodb://LaMouettas:root@localhost:27018/";
+const uri = "mongodb://sophie_toussaint:caolso14vylb@localhost:27018";
 const client = new MongoClient(uri);
 
 class OrderService {
@@ -199,6 +199,27 @@ class OrderService {
 
     return AveragePizzaSold;
   }
+
+  async mediumQtyByReceipe() {
+
+    const db = client.db("pizzas_orders_db");
+    const coll = db.collection("orders");
+    const order = await coll.aggregate([
+        {
+            $match: {
+                size: 'medium',
+            },
+        },
+        {
+            $group: {
+                _id: '$name',
+                mediumQty: { $sum: '$quantity' },
+            },
+        },
+    ]).toArray();
+    console.log(order);
+    return order
+}
 }
 
 const order = new OrderService();
@@ -210,31 +231,3 @@ const order = new OrderService();
 // console.log("Vegan orders : ", order.getVeganPizza("Vegan"))
 // console.log("Large orders : ", order.getLargePizza("large"))
 // console.log("Recette : ", order.getMostProfitablePizza());
-order
-  .getMostPopularPizzaSize()
-  .then((mostPopularSize) => {
-    console.log(
-      `La taille de pizza la plus populaire est : ${mostPopularSize}`
-    );
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-
-order
-  .getMostPopularPizza()
-  .then((mostPopularPizza) => {
-    console.log(`La pizza la plus populaire est : ${mostPopularPizza}`);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-
-order
-  .getAveragePizzaSold()
-  .then((average) => {
-    console.log(`La moyenne de pizza vendue est : ${average}`);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
